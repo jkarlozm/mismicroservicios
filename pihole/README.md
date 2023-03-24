@@ -1,4 +1,4 @@
-# Pi-hole
+# **Pi-hole**
 
 ![Pi-hole](Pihole.png)
 
@@ -17,7 +17,7 @@ ERROR: for pihole Cannot start service pihole: driver failed programming externa
 ~~~
 - - -
 
-## Solución
+## **Solución.**
 
 Investigando en la red di con está solución:
 
@@ -25,8 +25,13 @@ Enliste los servicios que están dados de alta con su correspondiente puerto en 
 
 `sudo lsof -iTCP -sTCP:LISTEN -P -n +c 10`
 
-De está manera identifique que en el puerto 53 estaba trabajando el servicio `systemd-resolved`, procedí a darlo de baja.
+De está manera identifique que en el puerto 53 estaba trabajando el servicio `systemd-resolved`, procedí a detenerlo.
 
 `systemctl stop systemd-resolved`
 
 Tras realizar la acción pude desplegar el servicio.
+
+### **Enlaces de referencia**
+
++ [stackoverflow - *"cant run pihole in docker-compose"*](https://stackoverflow.com/questions/64402111/cant-run-pihole-in-docker-compose)
++ [discourse.pi-hole - *"Setup on Pi in Docker - Bind Error"*](https://discourse.pi-hole.net/t/setup-on-pi-in-docker-bind-error/19137)
