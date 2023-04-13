@@ -10,12 +10,15 @@ La estrucurea empleada la tome de un canal de Youtube y de la documentacion de p
 
 ---
 ~~~
-karloz@DockerServer:~/Documentos$ tree -Ld 1 media/
+┌💁  karloz @ 💻  DockerServer in 📁  Documentos
+└❯ tree -Ld 1 media/
 media/
 ├── anime
 ├── descargas
 ├── peliculas
 └── series
+
+4 directories
 ~~~
 ---
 
@@ -25,8 +28,9 @@ En la organizacion de series y peliculas busco generar una carpeta con el nombre
 
 ---
 ~~~
-karloz@DockerServer:~/Documentos$ tree -Ld 1 media/
-media/anime/
+┌💁  karloz @ 💻  DockerServer in 📁  media
+└❯ tree -Ld 2 anime/
+anime/
 ├── Heidi (1974)
 │   └── Season 1
 ├── Junji Ito Maniac Relatos japoneses de lo macabro (2023)
@@ -36,17 +40,22 @@ media/anime/
 │   └── Season 3
 └── Record of Ragnarok (2021)
     └── Season 2
+
+9 directories
 ~~~
 ---
-### Estructura serie y animes - Episodios
+## Estructura serie y animes - Episodios
 
 Para los Episodios buscos darle la estructura SxxExx.
-Sxx - Numero de la temporada
+
+Sxx - Numero de la temporada  
 Exx - Numero del episodio
 
 ---
 ~~~
-media/anime/Record of Ragnarok (2021)/
+┌💁  karloz @ 💻  DockerServer in 📁  anime
+└❯ tree Record\ of\ Ragnarok\ \(2021\)/
+Record of Ragnarok (2021)/
 └── Season 2
     ├── S02E01.mp4
     ├── S02E02.mp4
@@ -58,5 +67,12 @@ media/anime/Record of Ragnarok (2021)/
     ├── S02E08.mp4
     ├── S02E09.mp4
     └── S02E10.mp4
+
+1 directory, 10 files
 ~~~
 ---
+
+## **Enlaces de referencia**
++ [NASeros - *"Cómo debemos estructurar, ordenar y renombrar películas y series en Plex"*](https://naseros.com/2015/11/24/como-debemos-estructurar-ordenar-y-renombrar-peliculas-y-series-en-plex/)
+
+
