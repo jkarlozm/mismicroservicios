@@ -23,7 +23,7 @@ ERROR: 1
 ~~~
 - - -
 
-## **Solución.**
+## **Solución 1.**
 
 Investigando en la red di con está solución:
 
@@ -64,7 +64,51 @@ karloz@DockerServer:~/Documentos/compose$ sudo systemctl status systemd-resolved
 
 Tras realizar la acción pude desplegar el servicio.
 
+## **SOLUCIÓN ACTUAL.**
+Ubuntu tiene una escucha resuelta por systemd en el puerto 53 de forma predeterminada razón por la cual no podemos levantar Pi-Hole.
+
+### **Comprobamos puertos en uso.**
+`sudo ss -tulwn | grep LISTEN`  
+`sudo lsof -i :53`  
+
+---
+~~~
+  ┌💁  karloz @ 💻  DockerServer in 📁  Documentos
+└❯ sudo ss -tulwn | grep LISTEN
+tcp   LISTEN 0      1024                                     127.0.0.1:32401      0.0.0.0:*          
+tcp   LISTEN 0      4096                                  100.73.0.118:47956      0.0.0.0:*          
+tcp   LISTEN 0      4096                                       0.0.0.0:10000      0.0.0.0:*          
+tcp   LISTEN 0      4096                                 127.0.0.53%lo:53         0.0.0.0:* 
+~~~
+---
+
+---
+~~~
+┌💁  karloz @ 💻  DockerServer in 📁  Documentos
+└❯ sudo lsof -i :53
+COMMAND    PID            USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
+systemd-r 6808 systemd-resolve   13u  IPv4  52027      0t0  UDP 127.0.0.53:domain 
+systemd-r 6808 systemd-resolve   14u  IPv4  52028      0t0  TCP 127.0.0.53:domain (LISTEN)
+~~~
+---
+
+### **Retirar uso del puerto 53 a systemd-resolved.**
+
+Acedemos a la siguiente ruta para editar el archivo *resolved.conf*
+
+`sudo nano /etc/systemd/resolved.conf`
+
+Descomentamos la siguiente línea y además cambiamos "yes" por "no".
+
+`DNSStubListener=no`
+
+### **Puerto libre.**
+Tras reiniciar el equipo podemos comprobar que el puerto está disponible y se puede utilizar.
+
 ### **Fuentes.**
 
 + [stackoverflow - *"cant run pihole in docker-compose"*](https://stackoverflow.com/questions/64402111/cant-run-pihole-in-docker-compose)
 + [discourse.pi-hole - *"Setup on Pi in Docker - Bind Error"*](https://discourse.pi-hole.net/t/setup-on-pi-in-docker-bind-error/19137)
++ [ugeek - *"LIBERAR EL PUERTO 53 UTILIZADO POR SYSTEMD-RESOLVED"*](https://ugeek.github.io/blog/post/2023-01-17-liberar-el-puerto-53-utilizado-por-systemd-resolved.html)
++ [linuxuprising - *"Ubuntu: How To Free Up Port 53, Used By systemd-resolved"*](https://www.linuxuprising.com/2020/07/ubuntu-how-to-free-up-port-53-used-by.html)
++ [esgeeks - *"CÓMO LOCALIZAR Y CERRAR UN PUERTO ABIERTO EN LINUX"*](https://esgeeks.com/abrir-cerrar-puertos-linux/)
