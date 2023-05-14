@@ -64,7 +64,7 @@ karloz@DockerServer:~/Documentos/compose$ sudo systemctl status systemd-resolved
 
 Tras realizar la acción pude desplegar el servicio.
 
-### **Enlaces de referencia**
+### **Fuentes.**
 
 + [stackoverflow - *"cant run pihole in docker-compose"*](https://stackoverflow.com/questions/64402111/cant-run-pihole-in-docker-compose)
 + [discourse.pi-hole - *"Setup on Pi in Docker - Bind Error"*](https://discourse.pi-hole.net/t/setup-on-pi-in-docker-bind-error/19137)
