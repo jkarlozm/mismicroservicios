@@ -24,4 +24,5 @@ Cuento con apenas 10 servicios desplegados y aun me falta muchos por desplegar.
 
 ### Red
 + Pi-hole
-* Nginx Proxy Manager
++ Nginx Proxy Manager
++ Tailscale
