@@ -1,0 +1,41 @@
+Volumes:
+  bookstack:
+  mysql:
+
+network:
+  database:
+
+services:
+  bookstack:
+    image: linuexserver/bookstack:latest
+    container_name: bookstack
+    environment:
+     - PUID=1000
+     - PGID=1000
+     - APP_URL=https://bookstack.com
+     - DB_HOST=mysql
+     - DB_PORT=3306
+     - DB_USER=${DBUBOOKSTACK}
+     - DB_PASS=${DBPBOOKSTACK}
+     - DB_DATABASE=${DBBOOKSTACK}
+    volumes:
+     - bookstack:/config
+    ports:
+     - 8080:80
+    restart: unless-stopped
+    links:
+     - mysql
+    depends_on:
+     - mysql
+    networks:
+     - database
+  
+  mysql:
+    image: mysql
+    container_name: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${PASSSQL}
+    volumes:
+      - mysqldb:/var/lib/mysql
+    networks:
+      - database
