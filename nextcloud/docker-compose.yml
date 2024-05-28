@@ -34,9 +34,9 @@ services:
       - MYSQL_DATABASE=${DBNC}
       - MYSQL_USER=${USERNC}
       - MYSQL_HOST=dbmaria
-      - NEXTCLOUD_TRUSTED_DOMAINS=cloud.homelab.me
-      - TRUSTED_PROXIES=cloud.homelab.me
-      - OVERWRITEHOST=cloud.homelab.me
+      - NEXTCLOUD_TRUSTED_DOMAINS=tudominio.com
+      - TRUSTED_PROXIES=tudominio.com
+      - OVERWRITEHOST=tudominio.com
       - OVERWRITEPROTOCOL=https
     volumes:
       - cloud:/var/www/html:rw
