@@ -101,4 +101,4 @@ docker compose up -d memos && docker compose logs -f memos
       - database
 ~~~
 
-Accedemos a Nextcloud desde el navegador colocando la IP del servidor mas el puerto.
+Accedemos a Memos desde el navegador colocando la IP del servidor mas el puerto.
