@@ -1,0 +1,61 @@
+services:
+  dbmaria:
+    image: mariadb:latest
+    container_name: dbmaria
+    hostname: dbmaria
+    mem_limit: 2g
+    cpu_shares: 768
+    init: true
+    security_opt:
+      - no-new-privileges:true
+    ports:
+      - 3306:3306
+    volumes:
+      - dbmaria:/var/lib/mysql:rw
+    environment:
+      - TZ=${TZ}
+      - MYSQL_ROOT_PASSWORD=${SQLROOT}
+    restart: unless-stopped
+    networks:
+      - databases
+
+  nextcloud:
+    image: nextcloud:latest
+    container_name: nextcloud
+    hostname: nextcloud
+    init: true
+    security_opt:
+      - no-new-privileges:true
+    ports:
+      - 80:80
+    environment:
+      - TZ=${TZ}
+      - MYSQL_PASSWORD=${PASSNC}
+      - MYSQL_DATABASE=${DBNC}
+      - MYSQL_USER=${USERNC}
+      - MYSQL_HOST=dbmaria
+      - NEXTCLOUD_TRUSTED_DOMAINS=cloud.homelab.me
+      - TRUSTED_PROXIES=cloud.homelab.me
+      - OVERWRITEHOST=cloud.homelab.me
+      - OVERWRITEPROTOCOL=https
+    volumes:
+      - cloud:/var/www/html:rw
+      - ${FILES}:/var/www/html/data
+    restart: always
+    networks:
+      - databases
+    links:
+      - dbmaria
+    depends_on:
+      dbmaria:
+        condition: service_started
+
+volumes:
+  dbmaria:
+    external: true
+  cloud:
+    external: true
+
+networks:
+  databases:
+    external: true
