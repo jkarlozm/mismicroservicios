@@ -1,0 +1,184 @@
+services:
+  #Servicio DNS dinámico
+  duckdns:
+    image: linuxserver/duckdns:latest
+    container_name: duckdns
+    hostname: duckdns
+    init: false
+    mem_limit: 2g
+    cpu_shares: 768
+    environment:
+      TZ: ${TZ}
+      SUBDOMAINS: ${SUBDOMINIO}
+      TOKEN: ${TOKEN}
+      LOG_FILE: false
+    volumes:
+      - datadns:/config
+    restart: always
+    networks:
+      - interna
+
+  #Proxy Inverso
+  npm:
+    image: jc21/nginx-proxy-manager:latest
+    container_name: npm
+    hostname: npm
+    init: false
+    healthcheck:
+      test: ["CMD", "/usr/bin/check-health"]
+      interval: 10s
+      timeout: 3s
+    ports:
+      - 80:80
+      - 443:443
+      - 49203:81
+    environment:
+      TZ: ${TZ}
+      PUID: #Agrega los tuyos
+      PGID: #Agrega los tuyos
+      DB_MYSQL_HOST: dbproxy
+      DB_MYSQL_PORT: 3306
+      DB_MYSQL_USER: ${CREDENCIAL}
+      DB_MYSQL_PASSWORD: ${CREDENCIAL}
+      DB_MYSQL_NAME: ${CREDENCIAL}
+    volumes:
+      - dataproxy:/data
+      - dataproxy:/etc/letsencrypt
+    networks:
+      - interna
+      - proxy
+    depends_on:
+      dbproxy:
+        condition: service_started
+    restart: always
+
+  #DB para Proxy Inverso
+  dbproxy:
+    image: jc21/mariadb-aria:latest
+    container_name: dbproxy
+    hostname: dbproxy
+    mem_limit: 2g
+    cpu_shares: 768
+    init: true
+    security_opt:
+      - no-new-privileges:true
+    ports:
+      - 49204:3306
+    environment:
+      TZ: ${TZ}
+      MYSQL_ROOT_PASSWORD: ${CREDENCIAL}
+      MYSQL_DATABASE: ${CREDENCIAL}
+      MYSQL_USER: ${CREDENCIAL}
+      MYSQL_PASSWORD: ${CREDENCIAL}
+      MARIADB_AUTO_UPGRADE: 1
+    volumes:
+      - datadbproxy:/var/lib/mysql
+    restart: unless-stopped
+    networks:
+      - interna
+
+  #CMS Ghost
+  ghost:
+    image: ghost:latest
+    container_name: ghost
+    hostname: ghost
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test: timeout 10s bash -c ':> /dev/tcp/127.0.0.1/2368' || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 90s
+    user: 1001:1001
+    environment:
+      database__client: mysql
+      database__connection__host: wikidb
+      database__connection__user: ${USERDB}
+      database__connection__password: ${PASS}
+      database__connection__database: ${DB}
+      url: https://midomio.com #Agrega tu dominio
+      NODE_ENV: production
+    volumes:
+      - dataghost:/var/lib/ghost/content:rw
+    ports:
+      - 2368:2368
+    restart: unless-stopped
+    depends_on:
+      wikidb:
+        condition: service_healthy
+    networks:
+      - interna
+      - proxy
+
+  #BD para CMS Ghost
+  wikidb:
+    image: mysql:latest
+    container_name: wikidb
+    hostname: wikidb
+    mem_limit: 2g
+    cpu_shares: 768
+    init: true
+    security_opt:
+      - no-new-privileges:false
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+    environment:
+      PUID: #Agrega los tuyos
+      PGID: #Agrega los tuyos
+      TZ: ${TZ}
+      MYSQL_ROOT_PASSWORD: ${ROOTPASS}
+    volumes:
+      - dbwikis:/var/lib/mysql:rw
+    ports:
+      - 3306:3306
+    restart: always
+    networks:
+      - interna
+
+  #Servicio de análisis de tráfico
+  umami:
+    image: docker.umami.is/umami-software/umami:mysql-latest
+    container_name: umami
+    hostname: umami
+    mem_limit: 2g
+    cpu_shares: 768
+    init: true
+    security_opt:
+      - no-new-privileges:false
+    environment:
+      DATABASE_URL: mysql://${UMAMIU}:${UMAMIP}@wikidb:3306/${UMAMIDB}
+      DATABASE_TYPE: mysql
+      APP_SECRET: #Agrega tu APP_SECRET
+    env_file:
+      - .env
+    ports:
+      - 3000:3000
+    restart: always
+    depends_on:
+      wikidb:
+        condition: service_started
+    networks:
+      - interna
+
+#Volumenes
+volumes:
+  dataproxy:
+    external: true
+  datadns:
+    external: true
+  datadbproxy:
+    external: true
+  dbwikis:
+    external: true
+  dataghost:
+    external: true
+
+#Redes
+networks:
+  interna:
+    name: interna
+    external: true
+  proxy:
+    name: proxy
+    external: true
