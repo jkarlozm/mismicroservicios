@@ -63,7 +63,7 @@ services:
       - AUTO_UPDATE=true
     restart: always
 
- flaresolverr:
+  flaresolverr:
     image: flaresolverr/flaresolverr
     container_name: flaresolverr
     hostname: flaresolverr

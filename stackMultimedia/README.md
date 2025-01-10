@@ -19,17 +19,28 @@ Docker instalado y configurado.
 
 ## Instalación
 
+ Crea una carpeta con el nombre "stackmultimedia".
+
+Descarga dentro de la carpera los siguientes archivos docker-compose.yml y .env usando el siguiente comando:
+
+`wget -c https://raw.githubusercontent.com/jkarlozm/mismicroservicios/refs/heads/main/stackMultimedia/docker-compose.yml`
+
+`wget -c https://github.com/jkarlozm/mismicroservicios/blob/main/stackMultimedia/.env`
+
+Instala cada uno de los servicios de manera individual con el siguente comando:
+
+`docker compose up -d [nombre_servicio] && docker logs -f [nombre_servicio]`
 
 ## Uso
 
-Accede a cada aplicación a través de su respectiva URL y puerto: 
-Plex: http://tu_servidor:32400
-Qbittorrent: http://tu_servidor:8080
-Sonarr: http://tu_servidor:8989
-Jackett: http://tu_servidor:9117
-Bazarr: http://tu_servidor:6767
-Flaresolverr: http://tu_servidor:8192
-Tiny Media Manager: http://tu_servidor:8081
+Accede a cada aplicación a través de su respectiva URL y puerto:   
+Plex: http://tu_servidor:32400  
+Qbittorrent: http://tu_servidor:8080  
+Sonarr: http://tu_servidor:8989  
+Jackett: http://tu_servidor:9117  
+Bazarr: http://tu_servidor:6767  
+Flaresolverr: http://tu_servidor:8192  
+Tiny Media Manager: http://tu_servidor:8081  
 
 ## Homelab
 
@@ -49,7 +60,7 @@ Este proyecto se distribuye bajo la licencia GNU General Public License v3.0
 
 ## Enlaces Relacionados
 
-* [Mi blog personal](vlog-jc.duckdns.org)
+* [Mi blog personal](https://vlog-jc.duckdns.org)
 
 * [Administración multimedia Plex](https://github.com/jkarlozm/mismicroservicios/tree/main/plex)
 
