@@ -3,7 +3,6 @@ services:
     image: linuxserver/plex:latest
     container_name: plex
     hostname: plex
-    init: true
     mem_limit: 3g
     cpu_shares: 1024
     security_opt:
