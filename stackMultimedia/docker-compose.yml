@@ -6,7 +6,7 @@ services:
     mem_limit: 3g
     cpu_shares: 1024
     security_opt:
-      - no-new-privileges:false
+      - no-new-privileges:true
     volumes:
       - ${DATA}plex:/config
       - ${MEDIA}:/media
@@ -22,7 +22,6 @@ services:
     image: linuxserver/qbittorrent:latest
     container_name: qbittorrent
     hostname: qbittorrent
-    init: true
     mem_limit: 3g
     cpu_shares: 1024
     security_opt:
