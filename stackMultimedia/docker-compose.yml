@@ -126,7 +126,7 @@ services:
     mem_limit: 3g
     cpu_shares: 1024
     security_opt:
-      - no-new-privileges:false
+      - no-new-privileges:true
     ports:
       - 5800:5800
     volumes:
