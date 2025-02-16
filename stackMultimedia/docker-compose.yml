@@ -80,7 +80,6 @@ services:
     image: linuxserver/sonarr:latest
     container_name: sonarr
     hostname: sonarr
-    init: true
     mem_limit: 3g
     cpu_shares: 1024
     security_opt:
