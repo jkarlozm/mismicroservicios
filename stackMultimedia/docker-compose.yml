@@ -44,7 +44,6 @@ services:
     image: linuxserver/jackett:latest
     container_name: jackett
     hostname: jackett
-    init: true
     mem_limit: 3g
     cpu_shares: 1024
     security_opt:
