@@ -25,7 +25,7 @@ services:
     mem_limit: 3g
     cpu_shares: 1024
     security_opt:
-      - no-new-privileges:false
+      - no-new-privileges:true
     ports:
       - 8103:8103
       - 6881:6881
@@ -83,7 +83,7 @@ services:
     mem_limit: 3g
     cpu_shares: 1024
     security_opt:
-      - no-new-privileges:false
+      - no-new-privileges:true
     ports:
       - 8989:8989
     volumes:
@@ -100,11 +100,10 @@ services:
     image: linuxserver/bazarr:latest
     container_name: bazarr
     hostname: bazarr
-    init: true
     mem_limit: 3g
     cpu_shares: 1024
     security_opt:
-      - no-new-privileges:false
+      - no-new-privileges:true
     ports:
       - 6767:6767
     volumes:
@@ -119,7 +118,7 @@ services:
   tinymediamanager:
     image: romancin/tinymediamanager:latest
     container_name: tinymediamanager
-    hostname: bazarr
+    hostname: tinymediamanager
     init: true
     mem_limit: 3g
     cpu_shares: 1024
